@@ -141,7 +141,7 @@ const Create = () => {
                 <>
                   <label
                     for="file"
-                    className="relative flex min-h-[200px] md:w-80 xl:w-96 cursor-pointer min-w-[200px] items-center justify-center rounded-md border border-dashed border-[#e0e0e0] p-8 text-center"
+                    className="relative flex min-h-[200px] md:w-96 xl:w-[600px] xl:h-80 2xl:w-[800px] 2xl:h-96 cursor-pointer min-w-[200px] items-center justify-center rounded-md border border-dashed border-[#e0e0e0] p-8 text-center"
                   >
                     {loading ? (
                       <Spinner
