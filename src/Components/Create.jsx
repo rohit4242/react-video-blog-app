@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+
+import JoditEditor from "jodit-react";
+
 import { categories } from "../data";
 import location_pin_alt from "../Assets/svg/location-pin-alt.svg";
 import trash_alt from "../Assets/svg/trash-alt.svg";
@@ -14,20 +18,28 @@ import {
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
-import app from "../firebase";
+import { doc, setDoc } from "firebase/firestore";
+import app, { fdb } from "../firebase";
+import { fetchUser } from "../Utils/fetchUser";
 
 const Create = () => {
+  const editor = useRef(null);
+
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Choose a Category");
   const [location, setLocation] = useState("");
-  const [videoAsset, setvideoAsset] = useState(false);
+  const [videoAsset, setvideoAsset] = useState(null);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(45);
   const [alert, setAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertIcon, setAlertIcon] = useState(null);
+  const [content, setContent] = useState("");
+
+  const [userInfo] = fetchUser();
 
   const storage = getStorage(app);
+  const navigate = useNavigate();
 
   const uploadImage = (e) => {
     setLoading(true);
@@ -78,12 +90,51 @@ const Create = () => {
       });
   };
 
-  useEffect(() => {}, [videoAsset]);
+  const config = {
+    placeholder: "Hello This is Rohit Luni",
+    width: "100%",
+    height: "500px",
+  };
+
+  const uploadDetails = async () => {
+    try {
+      setLoading(true);
+      if (!title && !category && !videoAsset) {
+        console.log("haha");
+
+        const data = {
+          id: `${Date.now()}`,
+          title: title,
+          userID: userInfo?.uid,
+          category: category,
+          location: location,
+          videoURL: videoAsset,
+          content: content,
+        };
+
+        await setDoc(doc(fdb, "videos", `${Date.now()}`), data);
+        setLoading(false);
+        navigate("/", { replace: true });
+      } else {
+        console.log("haha ok");
+        setAlert(true);
+        setAlertIcon(exclamation_triangle);
+        setAlertMessage("Required Fields are missing!");
+        setTimeout(() => {
+          setAlert(false);
+        }, 4000);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {}, [title, category, location, content]);
 
   return (
     <div className="flex items-center justify-center p-4 text-base font-medium text-[#6B7280] ">
       <div className="mx-auto w-full max-w-[950px] bg-white border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-        <form className="py-6 px-9" method="POST">
+        <form className="py-6 px-9">
           <div className="mb-5 ">
             {alert && <AlertMessage message={alertMessage} icon={alertIcon} />}
             <input
@@ -192,16 +243,25 @@ const Create = () => {
             </div>
 
             <div className="mb-5 rounded-md bg-[#F5F7FB] py-4 px-8">
-              <div className="flex items-center justify-between">
-                {category}
-              </div>
+              <div className="flex items-center justify-between">{content}</div>
             </div>
 
-            <div className="rounded-md bg-[#F5F7FB] py-4 px-8">{location}</div>
+            <JoditEditor
+              ref={editor}
+              config={config}
+              value={content}
+              tabIndex={1} // tabIndex of textarea
+              onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+              onChange={(newContent) => setContent(newContent)}
+            />
           </div>
 
           <div>
-            <button className="hover:shadow-form w-full rounded-md bg-teal-500 hover:bg-teal-400 py-3 px-8 text-center text-base font-semibold text-white outline-none">
+            <button
+              disabled={loading}
+              onClick={() => uploadDetails()}
+              className="hover:shadow-form w-full rounded-md bg-teal-500 hover:bg-teal-400 py-3 px-8 text-center text-base font-semibold text-white outline-none"
+            >
               Upload
             </button>
           </div>
