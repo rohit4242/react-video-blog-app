@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 // import avatar1 from "../../assets/avatar-1.jpg"
 import SearchField from "./SeachField";
-import icon from "../Assets/video.png";
+import create_dashboard from "../Assets/svg/create-dashboard.svg";
+import presentation_play from "../Assets/svg/presentation-play.svg";
+
 import { Link, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
@@ -22,13 +24,15 @@ const NavBar = ({ user }) => {
     <>
       <header className="w-full h-16 flex justify-between items-center p-4">
         <div className="text-center">
-          <img src={icon} alt="" width="65px" height="65px" />
+        <img src={presentation_play} width="60px" alt="apps" />
         </div>
         <SearchField />
 
-        <div className="rounded bg-gray-100 hover:bg-teal-400 dark:bg-gray-800">
-          <button className="text-2xl w-8 p-1 text-gray-400 hover:text-gray-100 dark:text-gray-500">
-            +
+        <div className="rounded bg-slate-100 hover:bg-slate-200 hover:text-slate-900 dark:bg-gray-800">
+          <button className="flex justify-center items-center gap-2 p-3">
+          <img src={create_dashboard} width="25px" alt="apps" />
+
+            Create Video
           </button>
         </div>
         <div className="">

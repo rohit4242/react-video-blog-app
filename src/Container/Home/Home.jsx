@@ -2,7 +2,6 @@ import React from "react";
 import { NavBar, SideBar } from "../../Components";
 import { Routes, Route } from "react-router-dom";
 import { Feed, Create, VideoPin, Search } from "../../Components/index";
-
 const Home = ({ user }) => {
   return (
     <>
@@ -13,7 +12,7 @@ const Home = ({ user }) => {
         <SideBar user={user} />
       </aside>
       <main className="p-4 sm:ml-64">
-        <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+        <div className="p-4 mt-14">
           <Routes>
             <Route path="/" element={<Feed />} />
             <Route path="/category/:categoryId" element={<Feed />} />
