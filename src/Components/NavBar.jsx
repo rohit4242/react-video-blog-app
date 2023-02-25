@@ -18,7 +18,12 @@ const NavBar = ({ user }) => {
   const handleLogout = () => {
     logOut();
     navigate("/signin");
+    localStorage.clear()
   };
+  const handlCreateBtn = () => {
+    navigate("/create");
+  };
+
 
   return (
     <>
@@ -29,7 +34,7 @@ const NavBar = ({ user }) => {
         <SearchField />
 
         <div className="rounded bg-slate-100 hover:bg-slate-200 hover:text-slate-900 dark:bg-gray-800">
-          <button className="flex justify-center items-center gap-2 p-3">
+          <button className="flex justify-center items-center gap-2 p-3" onClick={handlCreateBtn}>
           <img src={create_dashboard} width="25px" alt="apps" />
 
             Create Video

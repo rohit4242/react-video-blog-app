@@ -70,8 +70,8 @@ const SideBar = ({ user }) => {
                 onClick={() => setOpen(!open)}
               >
             <img src={apps} width="25px" alt="apps" />
-                <span className="font-medium text-gray-900">Category</span>
-                <span className="ml-6 flex items-center">
+                <span className="font-medium text-gray-900 invisible sm:visible">Category</span>
+                <span className="ml-6 flex items-center invisible sm:visible">
                   {open && open ? (
                     <img src={minus} width="25px" alt="apps" />
 

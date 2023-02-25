@@ -13,7 +13,7 @@ const firebaseConfig = {
   databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
 };
 
-console.log(process.env.REACT_APP_FIREBASE_API_KEY);
+console.log(process.env.REACT_APP_FIREBASE_DATABASE_URL);
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);

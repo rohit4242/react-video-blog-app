@@ -8,7 +8,6 @@ import location_pin_alt from "../Assets/svg/location-pin-alt.svg";
 import trash_alt from "../Assets/svg/trash-alt.svg";
 import check_circle from "../Assets/svg/check-circle.svg";
 import exclamation_triangle from "../Assets/svg/exclamation-triangle.svg";
-
 import Spinner from "./Spinner";
 import AlertMessage from "./AlertMessage";
 import {
@@ -28,7 +27,7 @@ const Create = () => {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Choose a Category");
   const [location, setLocation] = useState("");
-  const [videoAsset, setvideoAsset] = useState(null);
+  const [videoAsset, setVideoAsset] = useState(null);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(45);
   const [alert, setAlert] = useState(false);
@@ -40,6 +39,8 @@ const Create = () => {
 
   const storage = getStorage(app);
   const navigate = useNavigate();
+
+  useEffect(() => {}, [title, category, location, content]);
 
   const uploadImage = (e) => {
     setLoading(true);
@@ -60,7 +61,7 @@ const Create = () => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           console.log("File available at", downloadURL);
-          setvideoAsset(downloadURL);
+          setVideoAsset(downloadURL);
           setLoading(false);
           setAlert(true);
           setAlertIcon(check_circle);
@@ -77,7 +78,7 @@ const Create = () => {
     const deleteRef = ref(storage, videoAsset);
     deleteObject(deleteRef)
       .then(() => {
-        setvideoAsset(null);
+        setVideoAsset(null);
         setAlert(true);
         setAlertIcon(exclamation_triangle);
         setAlertMessage("Your video was removed from our server");
@@ -93,43 +94,71 @@ const Create = () => {
   const config = {
     placeholder: "Hello This is Rohit Luni",
     width: "100%",
-    height: "500px",
+    height: "300px",
   };
 
   const uploadDetails = async () => {
     try {
       setLoading(true);
-      if (!title && !category && !videoAsset) {
-        console.log("haha");
-
-        const data = {
-          id: `${Date.now()}`,
-          title: title,
-          userID: userInfo?.uid,
-          category: category,
-          location: location,
-          videoURL: videoAsset,
-          content: content,
-        };
-
-        await setDoc(doc(fdb, "videos", `${Date.now()}`), data);
-        setLoading(false);
-        navigate("/", { replace: true });
-      } else {
-        console.log("haha ok");
+      console.log(!videoAsset === null);
+      if (title === "") {
+        console.log("Title is missing");
         setAlert(true);
         setAlertIcon(exclamation_triangle);
-        setAlertMessage("Required Fields are missing!");
+        setAlertMessage("Required Field are the missing!");
         setTimeout(() => {
           setAlert(false);
         }, 4000);
         setLoading(false);
+        return;
       }
+      if (category === "Choose a Category") {
+        console.log("Category is missing");
+        setAlert(true);
+        setAlertIcon(exclamation_triangle);
+        setAlertMessage("Required Field are the missing!");
+        setTimeout(() => {
+          setAlert(false);
+        }, 4000);
+        setLoading(false);
+        return;
+      }
+      if (videoAsset === null) {
+        console.log("video is missing");
+        setAlert(true);
+        setAlertIcon(exclamation_triangle);
+        setAlertMessage("Required Field are the missing!");
+        setTimeout(() => {
+          setAlert(false);
+        }, 4000);
+        setLoading(false);
+        return;
+      }
+
+      const data = {
+        id: `${Date.now()}`,
+        title: title,
+        userID: userInfo?.uid,
+        category: category,
+        location: location,
+        videoURL: videoAsset,
+        content: content,
+      };
+
+      await setDoc(doc(fdb, "videos", `${Date.now()}`), data);
+      setLoading(false);
+      setAlert(true);
+      setAlertIcon(exclamation_triangle);
+      setAlertMessage("Your Blog are Uploaded Successfully");
+      setTimeout(() => {
+        setAlert(false);
+        navigate("/", { replace: true });
+      }, 4000);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
-  useEffect(() => {}, [title, category, location, content]);
 
   return (
     <div className="flex items-center justify-center p-4 text-base font-medium text-[#6B7280] ">
@@ -174,7 +203,6 @@ const Create = () => {
                 name="text"
                 id="text"
                 placeholder="Location"
-                required
                 value={location}
                 className="w-full pl-12 rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:ring-teal-500 focus:border-teal-500 focus:shadow-md"
                 onChange={(e) => setLocation(e.target.value)}
@@ -252,7 +280,7 @@ const Create = () => {
               value={content}
               tabIndex={1} // tabIndex of textarea
               onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-              onChange={(newContent) => setContent(newContent)}
+              // onChange={(newContent) => setContent(newContent)}
             />
           </div>
 
