@@ -1,18 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { NavBar, SideBar } from "../../Components";
 import { Routes, Route } from "react-router-dom";
 import { Feed, Create, VideoPin, Search } from "../../Components/index";
-import { fdb } from "../../firebase";
-import { getAllFeeds } from "../../Utils/fetchData";
 
 const Home = ({ user }) => {
-  const [feeds, setFeeds] = useState(null);
-
-  useEffect(() => {
-    getAllFeeds(fdb).then((data) => {
-      console.log(data);
-    });
-  }, []);
 
   return (
     <>
