@@ -1,7 +1,7 @@
 import React from "react";
 import { NavBar, SideBar } from "../../Components";
 import { Routes, Route } from "react-router-dom";
-import { Feed, Create, VideoPin, Search } from "../../Components/index";
+import { Feed, Create, UserProfile, Search,VideoPinDetails } from "../../Components/index";
 
 const Home = ({ user }) => {
 
@@ -19,8 +19,10 @@ const Home = ({ user }) => {
             <Route path="/" element={<Feed />} />
             <Route path="/category/:categoryId" element={<Feed />} />
             <Route path="/create" element={<Create />} />
-            <Route path="/videoDetail/:videoId" element={<VideoPin />} />
+            <Route path="/videoDetail/:videoId" element={<VideoPinDetails />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/userDetail/:userId" element={<UserProfile />} />
+
           </Routes>
         </div>
         {/* <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
