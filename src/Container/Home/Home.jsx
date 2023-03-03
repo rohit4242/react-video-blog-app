@@ -1,7 +1,7 @@
 import React from "react";
 import { NavBar, SideBar } from "../../Components";
 import { Routes, Route } from "react-router-dom";
-import { Feed, Create, UserProfile, Search,VideoPinDetails } from "../../Components/index";
+import { Feed, Create, UserProfile, Search,VideoPinDetails, AccountInfo } from "../../Components/index";
 
 const Home = ({ user }) => {
 
@@ -22,6 +22,7 @@ const Home = ({ user }) => {
             <Route path="/videoDetail/:videoId" element={<VideoPinDetails />} />
             <Route path="/search" element={<Search />} />
             <Route path="/userDetail/:userId" element={<UserProfile />} />
+            <Route path="/accountInfo" element={<AccountInfo user={user}/>} />
 
           </Routes>
         </div>

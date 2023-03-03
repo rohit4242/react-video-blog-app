@@ -6,3 +6,4 @@ export { default as VideoPin } from './VideoPin';
 export { default as SideBar } from './SideBar.jsx';
 export { default as VideoPinDetails } from './VideoPinDetails.jsx';
 export { default as UserProfile } from './UserProfile.jsx';
+export { default as AccountInfo } from './AccountInfo';
