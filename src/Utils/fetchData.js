@@ -25,3 +25,15 @@ export const getUserInfo = async (firestoreDb, userId) => {
     return "No Such Document";
   }
 };
+
+
+export const getSpecificVideo = async (firestoreDb, videoId) => {
+  const videoRef = doc(firestoreDb, "videos", videoId);
+
+  const videoSnap = await getDoc(videoRef);
+  if (videoSnap.exists()) {
+    return videoSnap.data();
+  } else {
+    return "No Such Document";
+  }
+};
